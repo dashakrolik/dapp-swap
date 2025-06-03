@@ -60,7 +60,11 @@ export default function App() {
         <LayoutCard>
           <WalletInfoSectionHeader isMobile={isMobile} />
           <Divider sx={{ borderColor: "rgba(255, 255, 255, 0.05)", my: 2 }} />
+
+          {/* ✅ Wallet connect / disconnect */}
           <ConnectWalletSection />
+
+          {/* ✅ Smart Account Info */}
           {account.isConnected && smartAccount && (
             <SmartAccountStatus
               smartAccount={smartAccount}
@@ -68,6 +72,8 @@ export default function App() {
             />
           )}
         </LayoutCard>
+
+        {/* ✅ Swap Form */}
         {account.isConnected && smartAccount && (
           <SwapForm
             tokenBalance={tokenBalance}

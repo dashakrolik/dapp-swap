@@ -21,33 +21,50 @@ export default function useSmartAccount() {
 
   const refreshBalances = async (addr = smartAccount) => {
     if (!addr) return;
-    const result: any = {};
-    for (const token of TOKENS) {
-      const raw = await readContract(publicClient, {
-        abi: erc20Abi,
-        address: token.address,
-        functionName: "balanceOf",
-        args: [addr],
-      });
-      result[token.symbol.toLowerCase()] = raw;
+    try {
+      const result: any = {};
+      for (const token of TOKENS) {
+        const raw = await readContract(publicClient, {
+          abi: erc20Abi,
+          address: token.address,
+          functionName: "balanceOf",
+          args: [addr],
+        });
+        result[token.symbol.toLowerCase()] = raw;
+      }
+      setTokenBalance(result);
+    } catch (err) {
+      console.error("Failed to refresh token balances -", err);
     }
-    setTokenBalance(result);
   };
 
   const initialize = async () => {
-    setIsLoading(true);
-    if (!walletClient) return;
-    const { accountAddress } = await setupKernelClient(walletClient);
-    setSmartAccount(accountAddress);
-    await refreshBalances(accountAddress);
-    setIsLoading(false);
+    if (!walletClient) {
+      console.warn("walletClient not yet available");
+      return;
+    }
+
+    try {
+      setIsLoading(true);
+
+      const { accountAddress } = await setupKernelClient(walletClient);
+
+      setSmartAccount(accountAddress);
+      await refreshBalances(accountAddress);
+    } catch (err) {
+      console.error("Smart account setup failed - ", err);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   useEffect(() => {
-    if (walletClient) {
+    if (walletClient && !smartAccount) {
       initialize();
+    } else if (!walletClient) {
+      setIsLoading(false);
     }
-  }, [walletClient]);
+  }, [walletClient, smartAccount]);
 
   return {
     smartAccount,
