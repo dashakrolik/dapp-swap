@@ -9,13 +9,26 @@ export default function ConnectWalletSection() {
   const { connect, connectors, error, status } = useConnect();
   const { disconnect } = useDisconnect();
 
+  console.log("connectors:", connectors);
+
   if (!account.isConnected) {
+    if (!connectors || connectors.length === 0) {
+      return (
+        <Typography fontSize={12} color="error" fontFamily="monospace">
+          No wallet connectors available.
+        </Typography>
+      );
+    }
+
     return (
       <Stack spacing={1}>
         {connectors.map((connector, i) => (
           <Button
-            key={connector.uid}
-            onClick={() => connect({ connector })}
+            key={connector.id || connector.name || i}
+            onClick={() => {
+              console.log("Connecting with connector:", connector);
+              connect({ connector });
+            }}
             fullWidth
             variant={i === 0 ? "contained" : "outlined"}
             sx={{

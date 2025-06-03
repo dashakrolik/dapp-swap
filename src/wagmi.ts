@@ -13,12 +13,16 @@ const sepolia: any = {
 };
 
 export function getConfig() {
+  const isClient = typeof window !== "undefined";
+
   return createConfig({
     chains: [mainnet, sepolia],
     connectors: [
       injected(),
       coinbaseWallet(),
-      walletConnect({ projectId: "00978dcf24b7f29d4ff28d0c34faaeaf" }),
+      ...(isClient
+        ? [walletConnect({ projectId: "00978dcf24b7f29d4ff28d0c34faaeaf" })]
+        : []),
     ],
     storage: createStorage({
       storage: cookieStorage,

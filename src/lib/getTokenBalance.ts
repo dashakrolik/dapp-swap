@@ -21,7 +21,7 @@ export async function getTokenBalance(
 
     return Number(balance) / 10 ** decimals;
   } catch (error) {
-    console.error("Failed to fetch token balance -", error);
+    console.error("Failed to fetch token balance - ", error);
     return 0;
   }
 }
