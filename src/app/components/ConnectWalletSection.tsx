@@ -9,8 +9,6 @@ export default function ConnectWalletSection() {
   const { connect, connectors, error, status } = useConnect();
   const { disconnect } = useDisconnect();
 
-  console.log("connectors:", connectors);
-
   if (!account.isConnected) {
     if (!connectors || connectors.length === 0) {
       return (
@@ -26,7 +24,6 @@ export default function ConnectWalletSection() {
           <Button
             key={connector.id || connector.name || i}
             onClick={() => {
-              console.log("Connecting with connector:", connector);
               connect({ connector });
             }}
             fullWidth
