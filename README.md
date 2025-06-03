@@ -17,7 +17,7 @@ BitsoSwap is a decentralized application (dApp) built with Next.js, Wagmi, and Z
 ## Setup Instructions
 
 1. **Clone the repository**  
-   `git clone <your-repo-url> && cd <your-repo>`
+   `git clone <https://github.com/dashakrolik/dapp-swap> && cd <dapp-swap>`
 
 2. **Install dependencies**  
    `npm install`
